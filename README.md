@@ -1,80 +1,100 @@
 # Khush
 
 **Software Engineering student · Technical University of Denmark (DTU)**  
-Java applications · Python & AI · Systems and user-centred software
+Building web applications, Java backends, and AI systems with attention to maintainable code, data, and user workflows.
 
-I’m studying software engineering at DTU and building experience through projects that involve application development, algorithms, and AI. I’m particularly interested in how software is designed, how its behaviour is verified, and how people use it.
-
-**Currently exploring:** backend development, networked systems, and applied AI.  
-**Interested in:** software engineering internships and student developer roles.
-
-[Explore my projects](#selected-projects) · [Engineering notes](#engineering-notes) · [Tools I use](#tools-i-use)
+[Featured projects](#featured-projects) · [Architecture](#architecture-at-a-glance) · [Code walkthroughs](#code-walkthroughs) · [Contact](#connect)
 
 ---
 
-## Selected projects
+## Featured projects
 
-Choose a starting point based on what you'd like to evaluate.
+| Project | Engineering focus | Explore the code |
+|:--|:--|:--|
+| **[Common Room Booking System](https://github.com/khush-B/Common-room-booking-system)** | React, TypeScript, Express, Supabase/PostgreSQL; authentication and room-booking workflows | [Frontend](https://github.com/khush-B/Common-room-booking-system/tree/main/block11/client/src) · [Backend](https://github.com/khush-B/Common-room-booking-system/tree/main/block11/server/src) |
+| **[Student Enrollment System](https://github.com/khush-B/Education-Enrollment-System)** | Java, Spring Boot, MySQL and JDBC; REST endpoints and CRUD operations | [Controllers](https://github.com/khush-B/Education-Enrollment-System/tree/main/src/controller) · [Data access](https://github.com/khush-B/Education-Enrollment-System/tree/main/src/dao) |
+| **[RoboRally Game Coordination](https://github.com/khush-B/Game-SignUp-Web-Application-Backend)** | Spring Boot game-lobby API with JavaFX desktop client | [Backend](https://github.com/khush-B/Game-SignUp-Web-Application-Backend) · [Client](https://github.com/khush-B/Game-SignUp-Web-Application-Frontend) |
+| **[Belief Revision AI Agent](https://github.com/khush-B/Belief-Revision-AI-Agent)** | Python, CNF conversion, resolution-based logical inference and automated testing | [Engine](https://github.com/khush-B/Belief-Revision-AI-Agent/tree/main/src) · [Tests](https://github.com/khush-B/Belief-Revision-AI-Agent/tree/main/tests) |
 
-| Looking for evidence of… | Project | Where to look |
-| --- | --- | --- |
-| **Logic, reasoning and tests** | **[Belief Revision AI Agent](https://github.com/khush-B/Belief-Revision---AI-Agent)** — Python implementation of propositional-logic reasoning and belief revision, developed as a team project. | [Entailment code](https://github.com/khush-B/Belief-Revision---AI-Agent/blob/main/src/resolution.py) · [Tests](https://github.com/khush-B/Belief-Revision---AI-Agent/tree/main/tests) |
-| **Algorithms and separation of concerns** | **[2048 with AI](https://github.com/khush-B/2048-game)** — Python 2048 game with an Expectimax player and a script for comparing search strategies. Team project. | [AI modules](https://github.com/khush-B/2048-game/tree/main/ai) · [Algorithm comparison](https://github.com/khush-B/2048-game/blob/main/compare_algorithms.py) |
-| **Java application development** | **[RoboRally](https://github.com/khush-B/RoboRally)** — Java implementation of the RoboRally board game. | [Source code](https://github.com/khush-B/RoboRally/tree/main/src) · [Maven project](https://github.com/khush-B/RoboRally/blob/main/pom.xml) |
+**Also explored:** [2048 with AI](https://github.com/khush-B/2048-game) · [RoboRally board game](https://github.com/khush-B/RoboRally) · [Student enrollment desktop GUI](https://github.com/khush-B/Education-mini-project-with-GUI)
 
-## Engineering notes
+## Architecture at a glance
 
-These expandable notes give a little more context without making the profile a long technical report.
+*These are separate projects, not one integrated application.*
+
+```mermaid
+flowchart LR
+  subgraph Booking["Booking web app"]
+    React["React / TypeScript"] --> Express["Express REST API"]
+    Express --> PG[("PostgreSQL")]
+  end
+  subgraph Enrolment["Enrollment system"]
+    Web["Web interface"] --> Spring["Spring Boot"]
+    Spring --> DAO["JDBC / DAO"]
+    DAO --> MySQL[("MySQL")]
+  end
+  subgraph AI["Belief revision"]
+    Parser["Parser"] --> CNF["CNF conversion"]
+    CNF --> Resolution["Resolution"]
+    Resolution --> Revision["Revision engine"]
+  end
+```
+
+## Code walkthroughs
 
 <details>
-<summary><strong>01 — Belief Revision: making logical inference testable</strong></summary>
+<summary><strong>01 · How are booking requests handled?</strong></summary>
 
-<br>
+The project separates the [booking form](https://github.com/khush-B/Common-room-booking-system/blob/main/block11/client/src/pages/BookingFormPage.tsx), [booking API routes](https://github.com/khush-B/Common-room-booking-system/blob/main/block11/server/src/routes/bookings.ts), and [service logic](https://github.com/khush-B/Common-room-booking-system/blob/main/block11/server/src/services/bookingService.ts). Its documentation covers JWT authentication, email OTP verification, and persistent booking data.
 
-The project works with propositional formulas, conversion to conjunctive normal form (CNF), resolution-based entailment, and belief revision.
-
-My documented contribution to the team project focused on the **entailment engine**. The repository includes a wider test suite for the team's work; its README documents **235 pytest tests** across logic, belief-base behaviour, AGM revision, and optional features.
-
-**Start here:** [resolution.py](https://github.com/khush-B/Belief-Revision---AI-Agent/blob/main/src/resolution.py) · [test_entailment.py](https://github.com/khush-B/Belief-Revision---AI-Agent/blob/main/tests/test_entailment.py) · [Run instructions](https://github.com/khush-B/Belief-Revision---AI-Agent#4-running-the-demo)
-
+[Open project README →](https://github.com/khush-B/Common-room-booking-system#readme)
 </details>
 
 <details>
-<summary><strong>02 — 2048: separating game rules from AI decisions</strong></summary>
+<summary><strong>02 · How is database access separated from request handling?</strong></summary>
 
-<br>
+In the enrollment project, [controllers](https://github.com/khush-B/Education-Enrollment-System/tree/main/src/controller) manage HTTP requests and [DAOs](https://github.com/khush-B/Education-Enrollment-System/tree/main/src/dao) manage MySQL queries. The README includes the schema and local startup instructions.
 
-The project keeps the **game engine** (`engine/`) separate from the **AI algorithms** (`ai/`). The engine handles the board and game rules; the AI chooses moves through the engine's interface.
-
-The repository includes an Expectimax player and comparisons involving Random, Greedy, MCTS, Minimax and Expectimax.
-
-**Try it:** with Python 3.10+, clone the repository and run `python main.py`. To explore the algorithm comparison, run `python compare_algorithms.py`.
-
-**Start here:** [engine/](https://github.com/khush-B/2048-game/tree/main/engine) · [ai/](https://github.com/khush-B/2048-game/tree/main/ai) · [README](https://github.com/khush-B/2048-game#readme)
-
+[Open project README →](https://github.com/khush-B/Education-Enrollment-System#readme)
 </details>
 
 <details>
-<summary><strong>03 — RoboRally: exploring a Java codebase</strong></summary>
+<summary><strong>03 · How does the game client communicate with its backend?</strong></summary>
 
-<br>
+The [JavaFX client](https://github.com/khush-B/Game-SignUp-Web-Application-Frontend) communicates with a [Spring Boot API](https://github.com/khush-B/Game-SignUp-Web-Application-Backend) to create, join, leave, delete and start online game lobbies. The actual board gameplay runs locally in the client.
 
-RoboRally is a board-game implementation in Java. The repository contains the Java source tree and a Maven project definition.
-
-**Start here:** [src/](https://github.com/khush-B/RoboRally/tree/main/src) · [pom.xml](https://github.com/khush-B/RoboRally/blob/main/pom.xml)
-
+[Open backend README →](https://github.com/khush-B/Game-SignUp-Web-Application-Backend#readme)
 </details>
 
-## Tools I use
+<details>
+<summary><strong>04 · Where is logical reasoning implemented and tested?</strong></summary>
 
-- **Languages:** Java, Python, JavaScript, SQL
-- **Application development:** Spring Boot, HTML/CSS, Maven
-- **Development workflow:** Git, GitHub, testing with pytest, Linux-based development
+The [Python source](https://github.com/khush-B/Belief-Revision-AI-Agent/tree/main/src) covers parsing, CNF, resolution, and belief revision. The [test suite](https://github.com/khush-B/Belief-Revision-AI-Agent/tree/main/tests) covers entailment, belief bases, AGM postulates, and extensions. The repository README reports 235 passing tests; this isn't a live CI measurement.
 
-I'm continuing to develop my skills in backend architecture, systems programming, and user-centred design through DTU coursework and projects.
+[Open AI project README →](https://github.com/khush-B/Belief-Revision-AI-Agent#readme)
+</details>
+
+## Technical toolkit
+
+| Area | Technologies used in repositories |
+|:--|:--|
+| Languages | Java, Python, TypeScript, JavaScript, SQL |
+| Backend | Spring Boot, Express, REST APIs, JDBC |
+| Frontend | React, JavaFX, HTML, CSS |
+| Data | PostgreSQL / Supabase, MySQL, H2 |
+| Engineering | Git, Maven, automated tests |
+
+## GitHub activity
+
+[![GitHub activity graph](https://github-readme-activity-graph.vercel.app/graph?username=khush-B&theme=github-compact&hide_border=true&area=true)](https://github.com/khush-B)
+
+<sub>This graph is generated by an external community service and may not always load. The linked repositories and GitHub contribution history are the primary evidence of work.</sub>
+
+## Connect
+
+- [GitHub](https://github.com/khush-B)
+- [Email](mailto:s233967@dtu.dk)
+- Interested in software engineering internships, backend development and applied AI.
 
 ---
-
-**See more:** [All public repositories](https://github.com/khush-B?tab=repositories)
-
-<!-- Before adding this profile to your CV, add a verified LinkedIn URL or professional contact method here, if you want recruiters to contact you outside GitHub. -->
+<sub>Some projects are university group assignments. Read individual repositories for scope and contribution details.</sub>
